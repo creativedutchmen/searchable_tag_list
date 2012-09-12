@@ -1,18 +1,22 @@
 <?php
 
 class extension_searchable_tag_list extends extension{
-	public function install(){
-		return Symphony::Database()->query(
-			'CREATE TABLE IF NOT EXISTS `sym_fields_searchabletaglist` (
-				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				`field_id` int(11) unsigned NOT NULL,
-				`validator` varchar(255) DEFAULT NULL,
-				`pre_populate_source` varchar(15) DEFAULT NULL,
-				PRIMARY KEY (`id`),
-				KEY `field_id` (`field_id`),
-				KEY `pre_populate_source` (`pre_populate_source`)
+	public function getSubscribedDelegates(){
+		return array(
+			array(
+				'page' => '/backend/',
+				'delegate' => 'InitaliseAdminPageHead',
+				'callback' => 'appendStylesAndScripts'
 			)
-			ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;'
 		);
+	}
+	public function appendStylesAndScripts($context){
+		$callback = Administration::instance()->getPageCallback();
+		if(is_a(Symphony::Engine(),'Administration')){
+			Symphony::Engine()->Page->addScriptToHead(URL . '/extensions/searchable_tag_list/assets/searchable_tag_list.admin.js', 70);
+			Symphony::Engine()->Page->addScriptToHead(URL . '/extensions/searchable_tag_list/assets/select2/select2.js', 70);
+			Symphony::Engine()->Page->addStylesheetToHead(URL . '/extensions/searchable_tag_list/assets/searchable_tag_list.admin.css', 'screen', 101);
+			Symphony::Engine()->Page->addStylesheetToHead(URL . '/extensions/searchable_tag_list/assets/select2/select2.css', 'screen', 100);
+		}
 	}
 }

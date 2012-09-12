@@ -1,0 +1,8 @@
+.select2-container{
+	display:block;
+}
+.select2-container .select2-search-field input.select2-input{
+	height:27px;
+	line-height:19px;
+	margin:0;
+}
